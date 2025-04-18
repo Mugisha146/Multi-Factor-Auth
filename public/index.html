@@ -3,80 +3,185 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MFA App</title>
+  <title>MFA App Dashboard</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 20px; }
-    .container { max-width: 400px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    h2 { text-align: center; }
+    :root {
+      --primary-color: #4a90e2;
+      --secondary-color: #50e3c2;
+      --bg-color: #f0f4f8;
+      --card-bg: #ffffff;
+      --text-color: #333333;
+      --error-color: #e74c3c;
+      --success-color: #27ae60;
+      --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-family);
+      background: var(--bg-color);
+      color: var(--text-color);
+    }
+    .container {
+      max-width: 400px;
+      margin: 60px auto;
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-bottom: 20px;
+      font-size: 1.75rem;
+      text-align: center;
+      color: var(--primary-color);
+    }
     form { display: flex; flex-direction: column; }
-    input, select, button { margin: 8px 0; padding: 10px; font-size: 1rem; }
-    button { cursor: pointer; border: none; border-radius: 4px; background: #bbca14; color: #fff; }
+    label { margin: 10px 0 5px; font-weight: bold; }
+    input, select {
+      padding: 12px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+    .btn {
+      margin: 20px 0 10px;
+      padding: 12px;
+      font-size: 1rem;
+      text-align: center;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .btn-primary {
+      background: var(--primary-color);
+      color: #fff;
+    }
+    .btn-primary:hover { background: #417dc1; }
+    .btn-secondary {
+      background: var(--secondary-color);
+      color: #fff;
+    }
+    .btn-secondary:hover { background: #3cb59e; }
+    .link {
+      background: none;
+      border: none;
+      color: var(--primary-color);
+      text-decoration: underline;
+      cursor: pointer;
+      padding: 0;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+    .message { margin: 10px 0; color: var(--success-color); }
+    .error { margin: 10px 0; color: var(--error-color); }
     .hidden { display: none; }
-    .message { margin: 10px 0; color: green; }
-    .error { margin: 10px 0; color: green; }
+    .nav-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- Home / Dashboard Section -->
+    <section id="home-section">
+      <h2>Welcome to MFA App</h2>
+      <div class="nav-buttons">
+        <button class="btn btn-primary" id="home-signup">Sign Up</button>
+        <button class="btn btn-secondary" id="home-login">Login</button>
+      </div>
+    </section>
+
     <!-- Signup Section -->
-    <section id="signup-section">
-      <h2>Sign Up</h2>
+    <section id="signup-section" class="hidden">
+      <h2>Create Your Account</h2>
       <div id="signup-message" class="message"></div>
       <div id="signup-error" class="error"></div>
       <form id="signup-form">
+        <label for="firstName">First Name</label>
         <input type="text" id="firstName" placeholder="First Name" required />
+
+        <label for="lastName">Last Name</label>
         <input type="text" id="lastName" placeholder="Last Name" required />
+
+        <label for="email-signup">Email Address</label>
         <input type="email" id="email-signup" placeholder="Email" required />
-<input type="password" id="password-signup" 
-       placeholder="Password "
-       pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" 
-       required />
-              <select id="role" required>
-  <option value="">Select Role</option>
-  <!-- Match backend's expected roles (e.g., 'user' or 'client') -->
-  <option value="user">User</option>  <!-- Changed from 'admin' -->
-  <option value="admin">Admin</option>
-</select>
+
+        <label for="password-signup">Password</label>
+        <input type="password" id="password-signup" 
+          placeholder="Password "
+          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" 
+          required />
+
+        <label for="role">Role</label>
+        <select id="role" required>
+          <option value="">Select Role</option>
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
+
+        <label for="gender">Gender</label>
         <select id="gender" required>
           <option value="">Select Gender</option>
           <option value="male">Male</option>
           <option value="female">Female</option>
         </select>
-        <!-- use tel type so users get the right keyboard, and validators are happier -->
-<input type="tel" id="phone" placeholder="Phone (e.g., +250123456789)" 
-       pattern="^\+[1-9]\d{1,14}$" required />
-               <button type="submit">Sign Up</button>
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" placeholder="+250123456789" 
+          pattern="^\+[1-9]\d{1,14}$" required />
+
+        <button type="submit" class="btn btn-primary">Sign Up</button>
       </form>
-      <p>Already have an account? <button id="to-login" type="button">Login here</button></p>
+      <button class="link" id="signup-to-login">Already have an account? Log in</button>
     </section>
 
     <!-- Login Section -->
     <section id="login-section" class="hidden">
-      <h2>Login</h2>
+      <h2>Login to Your Account</h2>
       <div id="login-message" class="message"></div>
       <div id="login-error" class="error"></div>
       <form id="login-form">
+        <label for="email-login">Email Address</label>
         <input type="email" id="email-login" placeholder="Email" required />
+
+        <label for="password-login">Password</label>
         <input type="password" id="password-login" placeholder="Password" required />
-        <button type="submit">Login</button>
+
+        <button type="submit" class="btn btn-secondary">Login</button>
       </form>
+      <button class="link" id="login-to-signup">Don't have an account? Sign up</button>
     </section>
 
     <!-- OTP Verification Section -->
     <section id="otp-section" class="hidden">
-      <h2>Enter OTP</h2>
+      <h2>Verify OTP</h2>
       <div id="otp-message" class="message"></div>
       <div id="otp-error" class="error"></div>
       <form id="otp-form">
-        <input type="text" id="otp-input" placeholder="OTP" required />
-        <button type="submit">Verify OTP</button>
+        <label for="otp-input">One-Time Password</label>
+        <input type="text" id="otp-input" placeholder="Enter OTP" required />
+
+        <button type="submit" class="btn btn-primary">Verify OTP</button>
       </form>
+      <button class="btn btn-secondary" id="otp-back">Back to Login</button>
     </section>
 
-    <!-- Dashboard Section -->
+    <!-- Post-Login Dashboard -->
     <section id="dashboard-section" class="hidden">
       <h2 id="welcome-msg">Welcome!</h2>
       <p>You have successfully logged in.</p>
+      <button class="btn btn-secondary" id="logout-btn">Logout</button>
     </section>
   </div>
 
@@ -86,24 +191,31 @@
     let authToken = '';
     let userInfo = {};
 
-    // show only the given section
     function showSection(id) {
-      ['signup-section','login-section','otp-section','dashboard-section']
+      ['home-section','signup-section','login-section','otp-section','dashboard-section']
         .forEach(sec => document.getElementById(sec).classList.add('hidden'));
       document.getElementById(id).classList.remove('hidden');
     }
 
-    // go to login
-    document.getElementById('to-login').addEventListener('click', () =>
-      showSection('login-section')
-    );
+    // Home navigation
+    document.getElementById('home-signup').addEventListener('click', () => showSection('signup-section'));
+    document.getElementById('home-login').addEventListener('click', () => showSection('login-section'));
+
+    // Toggle between signup and login
+    document.getElementById('signup-to-login').addEventListener('click', () => showSection('login-section'));
+    document.getElementById('login-to-signup').addEventListener('click', () => showSection('signup-section'));
+
+    // Back from OTP to Login
+    document.getElementById('otp-back').addEventListener('click', () => showSection('login-section'));
+
+    // Logout
+    document.getElementById('logout-btn').addEventListener('click', () => showSection('home-section'));
 
     // --- SIGNUP ---
     document.getElementById('signup-form').addEventListener('submit', async e => {
       e.preventDefault();
       document.getElementById('signup-message').textContent = '';
       document.getElementById('signup-error').textContent = '';
-
       const data = {
         firstName: document.getElementById('firstName').value.trim(),
         lastName:  document.getElementById('lastName').value.trim(),
@@ -113,30 +225,21 @@
         gender:    document.getElementById('gender').value,
         phone:     document.getElementById('phone').value.trim(),
       };
-
       try {
-       const res = await fetch(`${API_BASE}/signup`, {
-  method: 'POST',
-  mode: 'cors', // Enables cross-origin requests
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify(data),
-});
-
+        const res = await fetch(`${API_BASE}/signup`, {
+          method: 'POST', mode: 'cors', headers: {'Content-Type':'application/json'},
+          body: JSON.stringify(data)
+        });
         const json = await res.json();
         if (res.ok) {
-          document.getElementById('signup-message').textContent = 'User created Successfully';
+          document.getElementById('signup-message').textContent = 'User created successfully ✅';
           setTimeout(() => showSection('login-section'), 1500);
         } else {
-          // show validator errors array or single message
           document.getElementById('signup-error').textContent =
-            json.errors
-              ? json.errors.map(err => err.msg).join('; ')
-              : ('User created Successfully');
+            json.errors ? json.errors.map(e=>e.msg).join('; ') : json.message;
         }
       } catch (err) {
-        document.getElementById('signup-error').textContent = 'User created Successfully';
+        document.getElementById('signup-error').textContent = 'Network error ❌';
       }
     });
 
@@ -145,30 +248,23 @@
       e.preventDefault();
       document.getElementById('login-message').textContent = '';
       document.getElementById('login-error').textContent = '';
-
       const email = document.getElementById('email-login').value.trim();
       const password = document.getElementById('password-login').value;
-
       try {
         const res = await fetch(`${API_BASE}/login`, {
-          method: 'POST',
-          mode: 'cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
+          method: 'POST', mode: 'cors', headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({email, password})
         });
         const json = await res.json();
         if (res.ok) {
-          currentEmail = email;
-          authToken = json.token;
-          userInfo = json.data.user;
-          document.getElementById('login-message').textContent = json.message || 'OTP sent';
-          setTimeout(() => showSection('otp-section'), 1500);
+          currentEmail = email; authToken = json.token; userInfo = json.data.user;
+          document.getElementById('login-message').textContent = json.message || 'OTP sent ✅';
+          setTimeout(() => showSection('otp-section'), 1000);
         } else {
-          document.getElementById('login-error').textContent = json.message || 'Login failed';
+          document.getElementById('login-error').textContent = json.message || 'Login failed ❌';
         }
       } catch (err) {
-        document.getElementById('login-error').textContent = 'Network error';
-        console.error(err);
+        document.getElementById('login-error').textContent = 'Network error ❌';
       }
     });
 
@@ -177,37 +273,30 @@
       e.preventDefault();
       document.getElementById('otp-message').textContent = '';
       document.getElementById('otp-error').textContent = '';
-
       const otp = document.getElementById('otp-input').value.trim();
-
       try {
         const res = await fetch(`${API_BASE}/verify-otp`, {
-          method: 'POST',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${authToken}`,
-          },
-          body: JSON.stringify({ email: currentEmail, otp }),
+          method: 'POST', mode: 'cors',
+          headers: {'Content-Type':'application/json','Authorization':`Bearer ${authToken}`},
+          body: JSON.stringify({email: currentEmail, otp})
         });
         const json = await res.json();
         if (res.ok) {
-          document.getElementById('otp-message').textContent = json.message || 'OTP verified';
+          document.getElementById('otp-message').textContent = json.message || 'OTP verified ✅';
           setTimeout(() => {
             document.getElementById('welcome-msg').textContent = `Welcome, ${userInfo.firstName}!`;
             showSection('dashboard-section');
           }, 1000);
         } else {
-          document.getElementById('otp-error').textContent = json.message || 'OTP invalid';
+          document.getElementById('otp-error').textContent = json.message || 'Invalid OTP ❌';
         }
       } catch (err) {
-        document.getElementById('otp-error').textContent = 'Network error';
-        console.error(err);
+        document.getElementById('otp-error').textContent = 'Network error ❌';
       }
     });
 
-    // show signup first
-    showSection('signup-section');
+    // Show home by default
+    showSection('home-section');
   </script>
 </body>
 </html>
