@@ -56,7 +56,7 @@ app.use(morgan("dev"));
 app.get('/', (_req, res) => {
   res.json({ message: 'Welcome to Multi-Factor Authentication App' });
 });
-app.use("/api/Users", UserRRoutes);
+app.use("/api/users", UserRRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 export default app;
